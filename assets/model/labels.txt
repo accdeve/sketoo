@@ -1,0 +1,8 @@
+0 eye
+1 square
+2 circle
+3 star
+4 bowtie
+5 butterfly
+6 mug
+7 door

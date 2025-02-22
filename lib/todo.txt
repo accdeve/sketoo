@@ -1,0 +1,4 @@
+TODO
+====
+2. ketika pause ada halama transparan yg mmebua tidak bisa melukis
+4. tes 20 detik di hp
