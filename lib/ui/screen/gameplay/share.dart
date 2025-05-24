@@ -63,9 +63,9 @@ class _ShareScreenState extends State<ShareScreen> {
 
   void isWinnerShare() {
     List<String> pasukanPlayer1 =
-        context.read<Player_1Cubit>().state.pasukanHewan;
+        context.read<Player_1Cubit>().state.player_1.pasukanHewan;
     List<String> pasukanPlayer2 =
-        context.read<Player_2Cubit>().state.pasukanHewan;
+        context.read<Player_2Cubit>().state.player_2.pasukanHewan;
     int totalPoin1 = 0;
     int totalPoin2 = 0;
     for (String hewan in pasukanPlayer1) {
@@ -103,7 +103,6 @@ class _ShareScreenState extends State<ShareScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final screenHeight = mediaQuery.size.height;
-    ScreenshotController screenshotController = ScreenshotController();
 
     return RepaintBoundary(
       key: previewContainer,
@@ -165,11 +164,11 @@ class _ShareScreenState extends State<ShareScreen> {
                                                       crossAxisSpacing: 20,
                                                     ),
                                                     itemCount:
-                                                        state.pathImages.length,
+                                                        state.player_2.pathImages.length,
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index) {
-                                                      String imagePath = state
+                                                      String imagePath = state.player_2
                                                           .pathImages[index];
                                                       return Container(
                                                         decoration:
@@ -229,7 +228,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                               Player_1State>(
                                             builder: (context, state) {
                                               return Text(
-                                                state.nama,
+                                                state.player_1.nama,
                                                 style: poppinsBlack16,
                                               );
                                             },
@@ -262,7 +261,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                                 Player_2State>(
                                               builder: (context, state) {
                                                 return Text(
-                                                  state.nama,
+                                                  state.player_2.nama,
                                                   style: poppinsBlack16,
                                                 );
                                               },
@@ -302,11 +301,11 @@ class _ShareScreenState extends State<ShareScreen> {
                                                       crossAxisSpacing: 20,
                                                     ),
                                                     itemCount:
-                                                        state.pathImages.length,
+                                                        state.player_1.pathImages.length,
                                                     itemBuilder:
                                                         (BuildContext context,
                                                             int index) {
-                                                      String imagePath = state
+                                                      String imagePath = state.player_1
                                                           .pathImages[index];
                                                       return Container(
                                                         decoration:
@@ -412,12 +411,12 @@ class _ShareScreenState extends State<ShareScreen> {
                                                     crossAxisSpacing: 20,
                                                   ),
                                                   itemCount:
-                                                      state.pathImages.length,
+                                                      state.player_2.pathImages.length,
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
                                                     String imagePath =
-                                                        state.pathImages[index];
+                                                        state.player_2.pathImages[index];
                                                     return Container(
                                                       decoration: BoxDecoration(
                                                         borderRadius:
@@ -474,7 +473,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                             Player_1State>(
                                           builder: (context, state) {
                                             return Text(
-                                              state.nama,
+                                              state.player_1.nama,
                                               style: poppinsBlack16,
                                             );
                                           },
@@ -506,7 +505,7 @@ class _ShareScreenState extends State<ShareScreen> {
                                               Player_2State>(
                                             builder: (context, state) {
                                               return Text(
-                                                state.nama,
+                                                state.player_2.nama,
                                                 style: poppinsBlack16,
                                               );
                                             },
@@ -546,12 +545,12 @@ class _ShareScreenState extends State<ShareScreen> {
                                                     crossAxisSpacing: 20,
                                                   ),
                                                   itemCount:
-                                                      state.pathImages.length,
+                                                      state.player_1.pathImages.length,
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
                                                     String imagePath =
-                                                        state.pathImages[index];
+                                                        state.player_1.pathImages[index];
                                                     return Container(
                                                       decoration: BoxDecoration(
                                                         borderRadius:

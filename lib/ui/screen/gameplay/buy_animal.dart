@@ -45,9 +45,9 @@ class _BuyAnimalState extends State<BuyAnimal> {
 
   // logic
   void logicGamePlay(int player, int hargaHewan, String namaGambar, bool skip) {
-    bool player1Click = context.read<Player_1Cubit>().state.hasClick;
-    bool player2Click = context.read<Player_2Cubit>().state.hasClick;
-    int playerBabak = context.read<Player_1Cubit>().state.babak;
+    bool player1Click = context.read<Player_1Cubit>().state.player_1.hasClick;
+    bool player2Click = context.read<Player_2Cubit>().state.player_2.hasClick;
+    int playerBabak = context.read<Player_1Cubit>().state.player_1.babak;
 
     if (player == 1 && !player1Click) {
       context.read<Player_1Cubit>().subtractionKoin(hargaHewan);
@@ -83,8 +83,8 @@ class _BuyAnimalState extends State<BuyAnimal> {
     final screenWidth = mediaQuery.size.width;
     final screenHeight = mediaQuery.size.height;
 
-    int koinPlayer1 = context.read<Player_1Cubit>().state.koin;
-    int koinPlayer2 = context.read<Player_2Cubit>().state.koin;
+    int koinPlayer1 = context.read<Player_1Cubit>().state.player_1.koin;
+    int koinPlayer2 = context.read<Player_2Cubit>().state.player_2.koin;
 
     return PopScope(
       canPop: false,
@@ -121,7 +121,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                       child: Row(
                                         children: [
                                           Image.asset(iconKoin),
-                                          Text("${state.koin}", style: jomhuriaBlack20),
+                                          Text("${state.player_2.koin}", style: jomhuriaBlack20),
                                         ],
                                       ),
                                     );
@@ -251,7 +251,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                     quarterTurns: 2,
                                     child: BlocBuilder<Player_2Cubit, Player_2State>(
                                       builder: (context, state) {
-                                        return Text(state.nama, style: jomhuriaBlack20);
+                                        return Text(state.player_2.nama, style: jomhuriaBlack20);
                                       },
                                     ),
                                   ),
@@ -267,7 +267,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Text(state.nama, style: jomhuriaBlack20),
+                                      Text(state.player_1.nama, style: jomhuriaBlack20),
                                     ],
                                   ),
                                 );
@@ -391,7 +391,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                     return Row(
                                       children: [
                                         Image.asset(iconKoin),
-                                        Text("${state.koin}", style: jomhuriaBlack20),
+                                        Text("${state.player_1.koin}", style: jomhuriaBlack20),
                                       ],
                                     );
                                   },
@@ -453,7 +453,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                     child: Row(
                                       children: [
                                         Image.asset(iconKoin),
-                                        Text("${state.koin}", style: jomhuriaBlack20),
+                                        Text("${state.player_2.koin}", style: jomhuriaBlack20),
                                       ],
                                     ),
                                   );
@@ -583,7 +583,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                   quarterTurns: 2,
                                   child: BlocBuilder<Player_2Cubit, Player_2State>(
                                     builder: (context, state) {
-                                      return Text(state.nama, style: jomhuriaBlack20);
+                                      return Text(state.player_2.nama, style: jomhuriaBlack20);
                                     },
                                   ),
                                 ),
@@ -599,7 +599,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(state.nama, style: jomhuriaBlack20),
+                                    Text(state.player_1.nama, style: jomhuriaBlack20),
                                   ],
                                 ),
                               );
@@ -723,7 +723,7 @@ class _BuyAnimalState extends State<BuyAnimal> {
                                   return Row(
                                     children: [
                                       Image.asset(iconKoin),
-                                      Text("${state.koin}", style: jomhuriaBlack20),
+                                      Text("${state.player_1.koin}", style: jomhuriaBlack20),
                                     ],
                                   );
                                 },

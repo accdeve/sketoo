@@ -88,16 +88,16 @@ class ScoreConclusion extends StatelessWidget {
                         BlocBuilder<Player_1Cubit, Player_1State>(
                           builder: (context, state) {
                             String namePlayer2 =
-                                context.read<Player_2Cubit>().state.nama;
+                                context.read<Player_2Cubit>().state.player_2.nama;
                             return Text(
-                              "${state.nama} & $namePlayer2",
+                              "${state.player_1.nama} & $namePlayer2",
                               style: poppinsBlack16,
                             );
                           },
                         ),
                         BlocBuilder<Player_1Cubit, Player_1State>(
                           builder: (context, state) {
-                            List<String> pasukan = state.pasukanHewan;
+                            List<String> pasukan = state.player_1.pasukanHewan;
                             int totalPoin = 0;
                             for (String hewan in pasukan) {
                               totalPoin += hewanPoin1[hewan]!;
@@ -118,7 +118,7 @@ class ScoreConclusion extends StatelessWidget {
                         ),
                         BlocBuilder<Player_2Cubit, Player_2State>(
                           builder: (context, state) {
-                            List<String> pasukan = state.pasukanHewan;
+                            List<String> pasukan = state.player_2.pasukanHewan;
                             int totalPoin = 0;
                             for (String hewan in pasukan) {
                               totalPoin += pasukanMonster[hewan]!;

@@ -29,7 +29,7 @@ class _QuestionBoardState extends State<QuestionBoard> {
   void initState() {
     super.initState();
     setState(() {
-      babak = context.read<Player_1Cubit>().state.babak;
+      babak = context.read<Player_1Cubit>().state.player_1.babak;
     });
   }
 

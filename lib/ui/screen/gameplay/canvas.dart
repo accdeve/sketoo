@@ -30,7 +30,7 @@ class DrawingApp extends StatefulWidget {
 }
 
 class _DrawingAppState extends State<DrawingApp> {
-  int time = 20;
+  int time = 2;
   double similarity1 = 0.0;
   double similarity2 = 0.0;
   late Timer _timer;
@@ -80,7 +80,7 @@ class _DrawingAppState extends State<DrawingApp> {
   }
 
   void setLevel() {
-    int babak = context.read<Player_1Cubit>().state.babak;
+    int babak = context.read<Player_1Cubit>().state.player_1.babak;
     setState(() {
       level = jawabanOrangTua[babak - 1];
     });
@@ -248,7 +248,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                     child: Row(
                                       children: [
                                         Image.asset(iconKoin),
-                                        Text("${state.koin}",
+                                        Text("${state.player_2.koin}",
                                             style: jomhuriaBlack20),
                                       ],
                                     ),
@@ -286,7 +286,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                   children: [
                                     BlocBuilder<Player_2Cubit, Player_2State>(
                                       builder: (context, state) {
-                                        return Text(state.nama,
+                                        return Text(state.player_2.nama,
                                             style: juaBlack15);
                                       },
                                     ),
@@ -331,7 +331,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                         return Row(
                                           children: [
                                             for (var hewan
-                                                in state.pasukanHewan)
+                                                in state.player_2.pasukanHewan)
                                               Image.asset(
                                                   "assets/gameplay/$hewan.png",
                                                   height:
@@ -379,7 +379,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                         return Row(
                                           children: [
                                             for (var hewan
-                                                in state.pasukanHewan)
+                                                in state.player_1.pasukanHewan)
                                               Image.asset(
                                                   "assets/gameplay/$hewan.png",
                                                   height: 40),
@@ -428,7 +428,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                 children: [
                                   BlocBuilder<Player_1Cubit, Player_1State>(
                                     builder: (context, state) {
-                                      return Text(state.nama,
+                                      return Text(state.player_1.nama,
                                           style: juaBlack15);
                                     },
                                   ),
@@ -448,7 +448,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                   Row(
                                     children: [
                                       Image.asset(iconKoin),
-                                      Text('${state.koin}',
+                                      Text('${state.player_1.koin}',
                                           style: jomhuriaBlack20),
                                     ],
                                   ),
@@ -537,7 +537,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                   child: Row(
                                     children: [
                                       Image.asset(iconKoin),
-                                      Text("${state.koin}",
+                                      Text("${state.player_2.koin}",
                                           style: jomhuriaBlack20),
                                     ],
                                   ),
@@ -575,7 +575,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                 children: [
                                   BlocBuilder<Player_2Cubit, Player_2State>(
                                     builder: (context, state) {
-                                      return Text(state.nama,
+                                      return Text(state.player_2.nama,
                                           style: juaBlack15);
                                     },
                                   ),
@@ -619,7 +619,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                     builder: (context, state) {
                                       return Row(
                                         children: [
-                                          for (var hewan in state.pasukanHewan)
+                                          for (var hewan in state.player_2.pasukanHewan)
                                             Image.asset(
                                                 "assets/gameplay/$hewan.png",
                                                 height: hewan == "monster_besar"
@@ -664,7 +664,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                     builder: (context, state) {
                                       return Row(
                                         children: [
-                                          for (var hewan in state.pasukanHewan)
+                                          for (var hewan in state.player_1.pasukanHewan)
                                             Image.asset(
                                                 "assets/gameplay/$hewan.png",
                                                 height: 40),
@@ -712,7 +712,7 @@ class _DrawingAppState extends State<DrawingApp> {
                               children: [
                                 BlocBuilder<Player_1Cubit, Player_1State>(
                                   builder: (context, state) {
-                                    return Text(state.nama, style: juaBlack15);
+                                    return Text(state.player_1.nama, style: juaBlack15);
                                   },
                                 ),
                                 Text("${predictSafe(similarity1)}%",
@@ -730,7 +730,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                 Row(
                                   children: [
                                     Image.asset(iconKoin),
-                                    Text('${state.koin}',
+                                    Text('${state.player_1.koin}',
                                         style: jomhuriaBlack20),
                                   ],
                                 ),

@@ -28,9 +28,9 @@ class _ResultState extends State<Result> {
 
   void isWinner() {
     List<String> pasukanPlayer1 =
-        context.read<Player_1Cubit>().state.pasukanHewan;
+        context.read<Player_1Cubit>().state.player_1.pasukanHewan;
     List<String> pasukanPlayer2 =
-        context.read<Player_2Cubit>().state.pasukanHewan;
+        context.read<Player_2Cubit>().state.player_2.pasukanHewan;
     int totalPoin1 = 0;
     int totalPoin2 = 0;
     for (String hewan in pasukanPlayer1) {
@@ -57,9 +57,9 @@ class _ResultState extends State<Result> {
 
   List<Widget> hasilTarikan() {
     List<String> pasukanPlayer1 =
-        context.read<Player_1Cubit>().state.pasukanHewan;
+        context.read<Player_1Cubit>().state.player_1.pasukanHewan;
     List<String> pasukanPlayer2 =
-        context.read<Player_2Cubit>().state.pasukanHewan;
+        context.read<Player_2Cubit>().state.player_2.pasukanHewan;
     int totalPoin1 = 0;
     int totalPoin2 = 0;
     for (String hewan in pasukanPlayer1) {
@@ -138,7 +138,7 @@ class _ResultState extends State<Result> {
                           Image.asset(iconKoin),
                           BlocBuilder<Player_2Cubit, Player_2State>(
                             builder: (context, state) {
-                              return Text("${state.koin}",
+                              return Text("${state.player_2.koin}",
                                   style: jomhuriaBlack20);
                             },
                           ),
@@ -174,7 +174,7 @@ class _ResultState extends State<Result> {
                             builder: (context, state) {
                               return Row(
                                 children: [
-                                  for (var hewan in state.pasukanHewan)
+                                  for (var hewan in state.player_2.pasukanHewan)
                                     Image.asset("assets/gameplay/$hewan.png",
                                         height:
                                             hewan == "monster_besar" ? 30 : 30),
@@ -186,7 +186,7 @@ class _ResultState extends State<Result> {
                             builder: (context, state) {
                               return Row(
                                 children: [
-                                  for (var hewan in state.pasukanHewan)
+                                  for (var hewan in state.player_1.pasukanHewan)
                                     Image.asset("assets/gameplay/$hewan.png",
                                         height: 30),
                                 ],
@@ -242,7 +242,7 @@ class _ResultState extends State<Result> {
                         Image.asset(iconKoin),
                         BlocBuilder<Player_1Cubit, Player_1State>(
                           builder: (context, state) {
-                            return Text("${state.koin}",
+                            return Text("${state.player_1.koin}",
                                 style: jomhuriaBlack20);
                           },
                         ),

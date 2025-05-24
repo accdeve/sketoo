@@ -23,10 +23,10 @@ class HargaHewan extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isKoinPlayerEnough(int player) {
       if (player == 1) {
-        int koin = context.read<Player_1Cubit>().state.koin;
+        int koin = context.read<Player_1Cubit>().state.player_1.koin;
         return koin >= harga ? true : false;
       } else {
-        int koin = context.read<Player_2Cubit>().state.koin;
+        int koin = context.read<Player_2Cubit>().state.player_2.koin;
         return koin >= harga ? true : false;
       }
     }

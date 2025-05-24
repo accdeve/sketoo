@@ -48,7 +48,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ),
             child: QuestionBoard(
               pertanyaan:
-                  pertanyaanOrtu[context.read<Player_1Cubit>().state.babak - 1],
+                  pertanyaanOrtu[context.read<Player_1Cubit>().state.player_1.babak - 1],
               route: DrawingApp.routename,
               isQuestion: true,
             ),
