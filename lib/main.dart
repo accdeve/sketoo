@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sketoo/ui/screen/gameplay/share.dart';
 import 'package:sketoo/ui/screen/information/exit.dart';
 import 'package:sketoo/ui/screen/information/welcome.dart';
@@ -16,6 +17,8 @@ import 'package:sketoo/ui/screen/gameplay/result.dart';
 import 'package:sketoo/utils/assets.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(

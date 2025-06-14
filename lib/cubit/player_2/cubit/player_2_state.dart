@@ -10,7 +10,7 @@ class Player_2State extends Equatable{
   }) : player_2 = player_2 ??
             Player(
               koin: 0,
-              nama: "Player 1",
+              nama: "Player 2",
               pasukanHewan: [],
               babak: 0,
               hasClick: false,

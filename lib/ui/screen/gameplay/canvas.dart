@@ -30,7 +30,7 @@ class DrawingApp extends StatefulWidget {
 }
 
 class _DrawingAppState extends State<DrawingApp> {
-  int time = 2;
+  int time = 30;
   double similarity1 = 0.0;
   double similarity2 = 0.0;
   late Timer _timer;
@@ -41,6 +41,8 @@ class _DrawingAppState extends State<DrawingApp> {
   String level = '';
   bool isTimerRunning = true;
   bool hasClickPop = false;
+  bool isHasDrawing1 = false;
+  bool isHasDrawing2 = false;
 
   @override
   void initState() {
@@ -58,8 +60,8 @@ class _DrawingAppState extends State<DrawingApp> {
   }
 
   void countingTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!isTimerRunning) return; // Tambahkan pengecekan ini
+    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (!isTimerRunning) return; 
       if (time > 0) {
         _performPredictionAndUpdateSimilarity();
         setState(() {
@@ -76,6 +78,7 @@ class _DrawingAppState extends State<DrawingApp> {
   }
 
   void cleanCanvas(GlobalKey<SfSignaturePadState> signatureGlobal) {
+    // print(signatureGlobal.currentState!.toPathList());
     signatureGlobal.currentState!.clear();
   }
 
@@ -134,7 +137,7 @@ class _DrawingAppState extends State<DrawingApp> {
     final interpreter =
         await tfl.Interpreter.fromAsset('assets/model/model2.tflite');
 
-    Float32List input = Float32List(1 * 28 * 28 * 1);
+    Float32List input = Float32List(1 * 32 * 32 * 1);
     for (int i = 0; i < 702; i++) {
       input[i] = image[i] / 255.0;
     }
@@ -156,8 +159,16 @@ class _DrawingAppState extends State<DrawingApp> {
 
       int index = jawabanOrangTua.indexOf(level);
       setState(() {
-        similarity1 = resultPrediction1[0][index];
-        similarity2 = resultPrediction2[0][index];
+        if (signatureGlobalKey1.currentState!.toPathList().isEmpty) {
+          similarity1 = 0;
+        } else {
+          similarity1 = resultPrediction1[0][index];
+        }
+        if (signatureGlobalKey2.currentState!.toPathList().isEmpty) {
+          similarity2 = 0;
+        } else {
+          similarity2 = resultPrediction2[0][index];
+        }
       });
     } catch (e) {
       throw Exception("perfome predikciton and update gagal $e");
@@ -184,14 +195,38 @@ class _DrawingAppState extends State<DrawingApp> {
   }
 
   int predictSafe(double similarity) {
-    if ((double.parse((similarity.toString().substring(0, 3))) * 10).toInt() <=
-        10) {
-      return (double.parse((similarity.toString().substring(0, 3))) * 100)
-          .toInt();
-    } else {
-      return (double.parse((similarity.toString().substring(0, 3))) * 10)
-          .toInt();
+    if (similarity <= 0) {
+      return 0;
     }
+
+    String s = similarity.toString();
+
+    if (s.startsWith('0.')) {
+      s = s.substring(2);
+    }
+
+    int firstNonZeroIndex = -1;
+    for (int i = 0; i < s.length; i++) {
+      if (s[i] != '0') {
+        firstNonZeroIndex = i;
+        break;
+      }
+    }
+
+    if (firstNonZeroIndex == -1) {
+      return 0;
+    }
+
+    String significantDigits = s.substring(firstNonZeroIndex);
+
+    String resultString;
+    if (significantDigits.length >= 2) {
+      resultString = significantDigits.substring(0, 2);
+    } else {
+      resultString = '${significantDigits}0';
+    }
+
+    return int.tryParse(resultString) ?? 0;
   }
 
   @override
@@ -202,6 +237,7 @@ class _DrawingAppState extends State<DrawingApp> {
     return PopScope(
       canPop: false,
       child: Scaffold(
+        // layar kecil dari 750
         body: screenHeight < 750
             ? SingleChildScrollView(
                 child: Stack(
@@ -217,7 +253,7 @@ class _DrawingAppState extends State<DrawingApp> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          //player 1
+                          //player 2
                           const SizedBox(height: 30),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,7 +303,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                   child: Column(
                                     children: [
                                       SizedBox(
-                                        height: screenWidth / 1.8,
+                                        height: screenWidth / 1.4,
                                         width: screenWidth / 1.4,
                                         child: SfSignaturePad(
                                           key: signatureGlobalKey2,
@@ -275,6 +311,9 @@ class _DrawingAppState extends State<DrawingApp> {
                                           maximumStrokeWidth: 3,
                                           strokeColor: Colors.black,
                                           backgroundColor: Colors.white,
+                                          onDrawStart: () {
+                                            return false;
+                                          },
                                         ),
                                       ),
                                     ],
@@ -404,6 +443,7 @@ class _DrawingAppState extends State<DrawingApp> {
                           ),
 
                           const SizedBox(height: 10),
+
                           //player 1
                           Stack(
                             alignment: Alignment.topCenter,
@@ -411,7 +451,7 @@ class _DrawingAppState extends State<DrawingApp> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(30),
                                 child: SizedBox(
-                                  height: screenWidth / 1.8,
+                                  height: screenWidth / 1.4,
                                   width: screenWidth / 1.4,
                                   child: SfSignaturePad(
                                     key: signatureGlobalKey1,
@@ -492,6 +532,7 @@ class _DrawingAppState extends State<DrawingApp> {
                   ],
                 ),
               )
+
             //ukuran layar besar 750
             : Stack(
                 alignment: Alignment.center,
@@ -506,7 +547,7 @@ class _DrawingAppState extends State<DrawingApp> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //player 1
+                        //player 2
                         const SizedBox(height: 30),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -556,7 +597,7 @@ class _DrawingAppState extends State<DrawingApp> {
                                 child: Column(
                                   children: [
                                     SizedBox(
-                                      height: screenWidth / 1.8,
+                                      height: screenWidth / 1.4,
                                       width: screenWidth / 1.4,
                                       child: SfSignaturePad(
                                         key: signatureGlobalKey2,
@@ -564,6 +605,9 @@ class _DrawingAppState extends State<DrawingApp> {
                                         maximumStrokeWidth: 3,
                                         strokeColor: Colors.black,
                                         backgroundColor: Colors.white,
+                                        onDrawStart: () {
+                                          return false;
+                                        },
                                       ),
                                     ),
                                   ],
@@ -619,7 +663,8 @@ class _DrawingAppState extends State<DrawingApp> {
                                     builder: (context, state) {
                                       return Row(
                                         children: [
-                                          for (var hewan in state.player_2.pasukanHewan)
+                                          for (var hewan
+                                              in state.player_2.pasukanHewan)
                                             Image.asset(
                                                 "assets/gameplay/$hewan.png",
                                                 height: hewan == "monster_besar"
@@ -664,7 +709,8 @@ class _DrawingAppState extends State<DrawingApp> {
                                     builder: (context, state) {
                                       return Row(
                                         children: [
-                                          for (var hewan in state.player_1.pasukanHewan)
+                                          for (var hewan
+                                              in state.player_1.pasukanHewan)
                                             Image.asset(
                                                 "assets/gameplay/$hewan.png",
                                                 height: 40),
@@ -689,6 +735,7 @@ class _DrawingAppState extends State<DrawingApp> {
                         ),
 
                         const SizedBox(height: 10),
+
                         //player 1
                         Stack(
                           alignment: Alignment.topCenter,
@@ -696,7 +743,7 @@ class _DrawingAppState extends State<DrawingApp> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(30),
                               child: SizedBox(
-                                height: screenWidth / 1.8,
+                                height: screenWidth / 1.4,
                                 width: screenWidth / 1.4,
                                 child: SfSignaturePad(
                                   key: signatureGlobalKey1,
@@ -704,6 +751,9 @@ class _DrawingAppState extends State<DrawingApp> {
                                   maximumStrokeWidth: 3,
                                   strokeColor: Colors.black,
                                   backgroundColor: Colors.white,
+                                  onDrawStart: () {
+                                    return false;
+                                  },
                                 ),
                               ),
                             ),
@@ -712,7 +762,8 @@ class _DrawingAppState extends State<DrawingApp> {
                               children: [
                                 BlocBuilder<Player_1Cubit, Player_1State>(
                                   builder: (context, state) {
-                                    return Text(state.player_1.nama, style: juaBlack15);
+                                    return Text(state.player_1.nama,
+                                        style: juaBlack15);
                                   },
                                 ),
                                 Text("${predictSafe(similarity1)}%",
