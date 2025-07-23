@@ -147,12 +147,10 @@ class _DrawingAppState extends State<DrawingApp> {
     final interpreter =
         await tfl.Interpreter.fromAsset('assets/model/model2.tflite');
 
-    // Pastikan ukuran image sesuai [32x32x1]
     if (image.length != 32 * 32) {
       throw Exception("Image size is not 32x32. Found: ${image.length}");
     }
 
-    // Normalisasi ke 0-1 dan buat input float32 sesuai [1, 32, 32, 1]
     var input = List.generate(
         1,
         (_) => List.generate(
