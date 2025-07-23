@@ -61,7 +61,7 @@ class _DrawingAppState extends State<DrawingApp> {
 
   void countingTimer() {
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      if (!isTimerRunning) return; 
+      if (!isTimerRunning) return;
       if (time > 0) {
         _performPredictionAndUpdateSimilarity();
         setState(() {
@@ -105,12 +105,22 @@ class _DrawingAppState extends State<DrawingApp> {
       GlobalKey<SfSignaturePadState> signatureKey) async {
     if (signatureKey.currentState != null) {
       Uint8List signaturePngBytes = await signatureToPngImage(signatureKey);
-      img.Image? imgData = img.decodeImage(signaturePngBytes);
-      img.Image resizedImg = img.copyResize(imgData!, width: 224, height: 224);
-      img.Image grayscaleImg = img.grayscale(resizedImg);
-      Uint8List finalPngBytes = img.encodePng(grayscaleImg);
 
-      return finalPngBytes;
+      img.Image? imgData = img.decodeImage(signaturePngBytes);
+      if (imgData == null) throw Exception("Gagal decode image");
+
+      img.Image resizedImg = img.copyResize(imgData, width: 32, height: 32);
+
+      img.Image grayscaleImg = img.grayscale(resizedImg);
+
+      Uint8List rgba = grayscaleImg.toUint8List();
+      Uint8List gray = Uint8List(grayscaleImg.width * grayscaleImg.height);
+
+      for (int i = 0; i < gray.length; i++) {
+        gray[i] = rgba[i * 4];
+      }
+
+      return gray;
     } else {
       throw Exception("SignaturePad currentState is null");
     }
@@ -118,7 +128,7 @@ class _DrawingAppState extends State<DrawingApp> {
 
   // teachable
   // Future<List> prediction(Uint8List image) async {
-  //   final interpreter =
+  //   final interpreter
   //       await tfl.Interpreter.fromAsset('assets/model/model2.tflite');
 
   //   Float32List input = Float32List(1 * 224 * 224 * 1);
@@ -137,13 +147,20 @@ class _DrawingAppState extends State<DrawingApp> {
     final interpreter =
         await tfl.Interpreter.fromAsset('assets/model/model2.tflite');
 
-    Float32List input = Float32List(1 * 32 * 32 * 1);
-    for (int i = 0; i < 702; i++) {
-      input[i] = image[i] / 255.0;
+    // Pastikan ukuran image sesuai [32x32x1]
+    if (image.length != 32 * 32) {
+      throw Exception("Image size is not 32x32. Found: ${image.length}");
     }
 
-    var output = List.filled(1 * 4, 0).reshape([1, 4]);
-    interpreter.run(input.buffer.asUint8List(), output);
+    // Normalisasi ke 0-1 dan buat input float32 sesuai [1, 32, 32, 1]
+    var input = List.generate(
+        1,
+        (_) => List.generate(
+            32, (y) => List.generate(32, (x) => [image[y * 32 + x] / 255.0])));
+
+    var output = List.generate(1, (_) => List.filled(4, 0.0));
+
+    interpreter.run(input, output);
 
     return output;
   }
